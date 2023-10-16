@@ -1,11 +1,30 @@
 import {  TextField } from "@mui/material"
-
+// Importaciones de fontawesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun } from '@fortawesome/free-solid-svg-icons'
-
+// linkeado el componente
 import './App.css';
+import { useEffect } from "react";
 
 function App() {
+
+
+  useEffect(() => {
+    fetch(` https://api.openweathermap.org/data/2.5/weather?id=${process.env.REACT_APP_API_ID}&appid=${process.env.REACT_APP_API_KEY}`)
+   
+    .then((res) => {
+      if(res.status === 200) {
+        return res.json()
+      }else{
+        throw new Error("Esta colocando un caracter/pais invalido");
+      }
+    })
+      .then((data) => {
+        console.log(data)
+      })
+  }, []);
+
+
   return <div className="container">
 <div className="bg_img">
     <TextField variant="filled" label="Bucar.." className="input"/>
