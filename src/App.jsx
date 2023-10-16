@@ -6,7 +6,8 @@ import { faSun } from '@fortawesome/free-solid-svg-icons'
 import './App.css';
 
 function App() {
-  return <div className="bg_img">
+  return <div className="container">
+<div className="bg_img">
     <TextField variant="filled" label="Bucar.." className="input"/>
     <h1 className="city"> Buenos Aires</h1>
     <div className="group">
@@ -43,6 +44,10 @@ function App() {
     </div>
 
   </div>
+  </div>
+  
+  
+  
 }
 
 export default App;
