@@ -76,6 +76,17 @@
   }
   .box, .input{
     width: 70vw;
+    padding: 1rem;
+    border-radius: 12px;
+    background-color: rgba(0, 0, 0, 0.75);
+    text-align: center;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    gap: 7px;
+    transition: transform 0.2s;
   }
-  
+  .box:hover{
+    transform: scaleY(1.1);
+  }
 }
