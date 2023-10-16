@@ -74,11 +74,18 @@
   .box_container{
     flex-direction: column;
   }
+  .box_container{
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+  }
   .box, .input{
     width: 70vw;
     padding: 1rem;
     border-radius: 12px;
-    background-color: rgba(0, 0, 0, 0.75);
+    background-color: rgba(99, 40, 40, 0.75);
     text-align: center;
     display: flex;
     text-align: center;
