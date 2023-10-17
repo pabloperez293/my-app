@@ -82,7 +82,7 @@ function App() {
                 }}
               />
 
-              <img src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`} alt='' />
+             
               <h1>{data.weather[0].main}</h1>
             </div>
 
@@ -91,12 +91,12 @@ function App() {
               <div className='box_container'>
                 <div className='box'>
                   <p>Humedad</p>
-                  <h1>{data.main.humidity.toFixed()}%</h1>
+                  <h1>{data.main.humidity}%</h1>
                 </div>
 
                 <div className='box'>
                   <p>Vientos</p>
-                  <h1>{data.wind.speed.toFixed()}km/h</h1>
+                  <h1>{data.wind.speed}km/h</h1>
                 </div>
 
                 <div className='box'>
