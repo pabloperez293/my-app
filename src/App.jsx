@@ -1,18 +1,23 @@
-import { TextField, Slide } from "@mui/material";
-import { CircularProgress } from "@mui/material";
+import { TextField, Slide ,CircularProgress} from "@mui/material";
 // Importaciones de fontawesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloudSun } from "@fortawesome/free-solid-svg-icons";
 // linkeado el componente
 import "./App.css";
-import { useEffect, useState } from "react";
+import React,{ useEffect, useState } from "react";
+import Geolocalizacion from "./components/Geolocalizacion";
+// Integrando comp al principal
+import CitySelector from "./components/CitySelector";
+import WeatherDisplay from "./components/WeatherDisplay";
 
-import React from 'react';
-import Geolocalizacion from './components/Geolocalizacion';
 
-function App() {
+function App({ onSelectCity }) {
   const apiKey = process.env.REACT_APP_API_KEY;
 
+  const [selectedCity, setSelectedCity] = useState("");
+  const handleCitySelect = (city) => {
+    setSelectedCity(city);
+  };
   // console.log(process.env.REACT_APP_API_KEY)
 
   const [cityName, setCityName] = useState("Ciudad Autónoma de Buenos Aires");
@@ -50,13 +55,11 @@ function App() {
     }
   };
 
-
   return (
     <div className='container'>
-   
-
 
       <div className='bg_img'>
+      
         {!loading ? (
           <>
             <TextField
@@ -67,8 +70,6 @@ function App() {
               value={inputText}
               onChange={(evt) => setInputText(evt.target.value)}
               onKeyDown={handleSearch}
-              style={{"color":"white"}}
-              
             />
 
             {/* a11y Accecibilidad  */}
@@ -87,7 +88,6 @@ function App() {
                 }}
               />
 
-             
               <h1>{data.weather[0].main}</h1>
             </div>
 
@@ -99,12 +99,12 @@ function App() {
                   <h1>{data.main.humidity}%</h1>
                 </div>
 
-              {/* Geo */}
-              <div className='box'>
-                    <h1>Geolocalización </h1>
-                    <Geolocalizacion />
-                  </div>
-
+                {/* Geo */}
+                <div className='box'>
+                  <h1>Localización </h1>
+                  <Geolocalizacion />
+                </div>
+                {/* ------------------------ */}
                 <div className='box'>
                   <p>Vientos</p>
                   <h1>{data.wind.speed}km/h</h1>
@@ -120,8 +120,16 @@ function App() {
         ) : (
           <CircularProgress />
         )}
+
+      {/* Select 5 ciudades prestablecidas. */}
+      
+      <div className='box'>
+        <CitySelector onSelectCity={handleCitySelect} />
+        <WeatherDisplay selectedCity={selectedCity} />
       </div>
-    </div>
+
+      </div>
+     </div>
   );
 }
 

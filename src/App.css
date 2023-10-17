@@ -59,8 +59,9 @@
   display: flex;
   text-align: center;
   flex-direction: column;
-  gap: 7px;
+  gap: 5px;
   transition: transform 0.2s;
+  margin: 0.3rem;
 }
 .box:hover{
   transform: scaleY(1.1);
@@ -94,7 +95,7 @@
     display: flex;
     text-align: center;
     flex-direction: column;    
-    transition: transform 0.2s;
+    transition: transform 0.2s;    
   }
   .box:hover{
     transform: scaleY(1.1);
