@@ -23,8 +23,8 @@ function Geolocalizacion() {
     <div>
     {position ? (
       <div>
-        <p>Latitud: {position.coords.latitude}</p>
-        <p>Longitud: {position.coords.longitude}</p>
+        <p>Latitud: {Math.round(position.coords.latitude)}</p>
+        <p>Longitud: {Math.round(position.coords.longitude)}</p>
       </div>
     ) : (
       <p>Obteniendo la geolocalización...</p>
