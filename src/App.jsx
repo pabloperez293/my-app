@@ -1,12 +1,14 @@
-import { TextField, Slide, colors } from "@mui/material";
+import { TextField, Slide } from "@mui/material";
 import { CircularProgress } from "@mui/material";
-
 // Importaciones de fontawesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloudSun } from "@fortawesome/free-solid-svg-icons";
 // linkeado el componente
 import "./App.css";
 import { useEffect, useState } from "react";
+
+import React from 'react';
+import Geolocalizacion from './components/Geolocalizacion';
 
 function App() {
   const apiKey = process.env.REACT_APP_API_KEY;
@@ -51,6 +53,9 @@ function App() {
 
   return (
     <div className='container'>
+   
+
+
       <div className='bg_img'>
         {!loading ? (
           <>
@@ -93,6 +98,12 @@ function App() {
                   <p>Humedad</p>
                   <h1>{data.main.humidity}%</h1>
                 </div>
+
+              {/* Geo */}
+              <div className='box'>
+                    <h1>Geolocalización </h1>
+                    <Geolocalizacion />
+                  </div>
 
                 <div className='box'>
                   <p>Vientos</p>
