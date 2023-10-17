@@ -1,7 +1,7 @@
 import { TextField, Slide ,CircularProgress} from "@mui/material";
 // Importaciones de fontawesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCloudSun } from "@fortawesome/free-solid-svg-icons";
+import { faSun, faCloud, faSnowflake ,faCloudRain } from "@fortawesome/free-solid-svg-icons";
 // linkeado el componente
 import "./App.css";
 import React,{ useEffect, useState } from "react";
@@ -40,12 +40,11 @@ function App({ onSelectCity }) {
       })
       .then((data) => {
         setData(data);
-        // console.log(data);
+        console.log(data);
       })
       .catch(() => setError(true))
       .finally(() => setLoading(false));
   }, [cityName, error]);
-
   // console.log(inputText)
 
   const handleSearch = (e) => {
@@ -54,6 +53,29 @@ function App({ onSelectCity }) {
       setInputText("");
     }
   };
+
+  // Agregando los iconos 
+let weatherIcon;
+
+if (data.weather && data.weather.length > 0){
+  switch (data.weather[0].main) {
+    case "Clear":
+      weatherIcon = faSun;
+      break;
+    case "Clouds":
+      weatherIcon = faCloud;
+      break;
+    case "Snow":
+      weatherIcon = faSnowflake;
+      break;
+    case "Rain":
+      weatherIcon = faCloudRain;
+      break;
+    default:
+      weatherIcon = faSun; 
+  }}else{
+    weatherIcon = faSun;
+  }
 
   return (
     <div className='container'>
@@ -72,26 +94,20 @@ function App({ onSelectCity }) {
               onKeyDown={handleSearch}
             />
 
-            {/* a11y Accecibilidad  */}
-            {/* <TextField variant='filled' label='Bucar..' className='input' /> */}
-
             <h1 className='city'> {data.name}</h1>
             <div className='group'>
               {/* Llamo al componente */}
 
-              <FontAwesomeIcon
-                icon={faCloudSun}
-                style={{
-                  "--fa-primary-color": "#67828e",
+              <FontAwesomeIcon icon={weatherIcon} style={{                 
                   height: "60px",
-                  "--fa-secondary-color": "#ffdd00",
-                }}
-              />
+                }} />
+
 
               <h1>{data.weather[0].main}</h1>
             </div>
+            
 
-            <h1 className='temp'>{data.main.temp.toFixed()}°C</h1>
+            <h1 className='temp'>{Math.round(data.main.temp)}°C</h1>
             <Slide direction='right' timeout={800} in={!loading}>
               <div className='box_container'>
                 <div className='box'>
@@ -101,7 +117,7 @@ function App({ onSelectCity }) {
 
                 {/* Geo */}
                 <div className='box'>
-                  <h1>Localización </h1>
+                  <p>Localización </p>
                   <Geolocalizacion />
                 </div>
                 {/* ------------------------ */}
@@ -114,19 +130,20 @@ function App({ onSelectCity }) {
                   <p>Sensacion termica</p>
                   <h1>{data.main.feels_like.toFixed()}°C</h1>
                 </div>
-              </div>
+              </div>            
+
             </Slide>
+             {/* Select 5 ciudades prestablecidas. */}            
+             <div className='box'>
+              <CitySelector onSelectCity={handleCitySelect} />
+              <WeatherDisplay selectedCity={selectedCity} />
+            </div>
           </>
         ) : (
           <CircularProgress />
         )}
 
-      {/* Select 5 ciudades prestablecidas. */}
-      
-      <div className='box'>
-        <CitySelector onSelectCity={handleCitySelect} />
-        <WeatherDisplay selectedCity={selectedCity} />
-      </div>
+  
 
       </div>
      </div>
