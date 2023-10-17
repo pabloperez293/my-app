@@ -1,9 +1,9 @@
-import { TextField, Slide } from "@mui/material";
+import { TextField, Slide, colors } from "@mui/material";
 import { CircularProgress } from "@mui/material";
 
 // Importaciones de fontawesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSun, faCloudSun } from "@fortawesome/free-solid-svg-icons";
+import { faCloudSun } from "@fortawesome/free-solid-svg-icons";
 // linkeado el componente
 import "./App.css";
 import { useEffect, useState } from "react";
@@ -13,7 +13,7 @@ function App() {
 
   // console.log(process.env.REACT_APP_API_KEY)
 
-  const [cityID, setCityName] = useState("3433955");
+  const [cityName, setCityName] = useState("Ciudad Autónoma de Buenos Aires");
   const [inputText, setInputText] = useState("");
   const [data, setData] = useState({});
   const [error, setError] = useState(false);
@@ -21,7 +21,7 @@ function App() {
 
   useEffect(() => {
     fetch(
-      `https://api.openweathermap.org/data/2.5/weather?id=${cityID}&appid=${apiKey}`
+      `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`
     )
       .then((res) => {
         if (res.status === 200) {
@@ -37,7 +37,7 @@ function App() {
       })
       .catch(() => setError(true))
       .finally(() => setLoading(false));
-  }, [cityID, error]);
+  }, [cityName, error]);
 
   // console.log(inputText)
 
@@ -47,6 +47,7 @@ function App() {
       setInputText("");
     }
   };
+
 
   return (
     <div className='container'>
@@ -61,6 +62,7 @@ function App() {
               value={inputText}
               onChange={(evt) => setInputText(evt.target.value)}
               onKeyDown={handleSearch}
+              style={{"color":"white"}}
               
             />
 
@@ -80,27 +82,26 @@ function App() {
                 }}
               />
 
-              <img src={''} alt='' />
-              <h1>Clear</h1>
+              <img src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`} alt='' />
+              <h1>{data.weather[0].main}</h1>
             </div>
 
-            <h1 className='temp'>5 °C</h1>
-
+            <h1 className='temp'>{data.main.temp.toFixed()}°C</h1>
             <Slide direction='right' timeout={800} in={!loading}>
               <div className='box_container'>
                 <div className='box'>
                   <p>Humedad</p>
-                  <h1>12%</h1>
+                  <h1>{data.main.humidity.toFixed()}%</h1>
                 </div>
 
                 <div className='box'>
                   <p>Vientos</p>
-                  <h1>5 km/h</h1>
+                  <h1>{data.wind.speed.toFixed()}km/h</h1>
                 </div>
 
                 <div className='box'>
                   <p>Sensacion termica</p>
-                  <h1> 4 °C</h1>
+                  <h1>{data.main.feels_like.toFixed()}°C</h1>
                 </div>
               </div>
             </Slide>
