@@ -9,50 +9,39 @@ import Geolocalizacion from "./components/Geolocalizacion";
 // Integrando comp al principal
 import CitySelector from "./components/CitySelector";
 import WeatherDisplay from "./components/WeatherDisplay";
+import WeatherDataFetcher from "./components/WeatherDataFetcher";
 
 
 function App({ onSelectCity }) {
   const apiKey = process.env.REACT_APP_API_KEY;
-
-  const [selectedCity, setSelectedCity] = useState("");
-  const handleCitySelect = (city) => {
-    setSelectedCity(city);
-  };
-  // console.log(process.env.REACT_APP_API_KEY)
-
   const [cityName, setCityName] = useState("Ciudad Autónoma de Buenos Aires");
   const [inputText, setInputText] = useState("");
   const [data, setData] = useState({});
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`
-    )
-      .then((res) => {
-        if (res.status === 200) {
-          error && setError(false);
-          return res.json();
-        } else {
-          throw new Error("Esta colocando un caracter/pais invalido");
-        }
-      })
-      .then((data) => {
-        setData(data);
-        console.log(data);
-      })
-      .catch(() => setError(true))
-      .finally(() => setLoading(false));
-  }, [cityName, error]);
-  // console.log(inputText)
-
+// Esto sirve para la funcion de busqueda de ciudades
   const handleSearch = (e) => {
     if (e.key === "Enter") {
       setCityName(e.target.value);
       setInputText("");
     }
-  };
+  }
+  const handleCitySelect = (city) => {
+    setCityName(city);
+  }
+
+  const handleDataError = (hasError) => {
+    setError(hasError);
+  }
+
+  const handleDataLoadComplete = () => {
+    setLoading(false);
+  }
+
+  const handleWeatherData = (data) => {
+    setData(data);
+  }
 
   // Agregando los iconos 
 let weatherIcon;
@@ -79,11 +68,14 @@ if (data.weather && data.weather.length > 0){
 
   return (
     <div className='container'>
-
       <div className='bg_img'>
-
-  
-      
+      <WeatherDataFetcher
+          cityName={cityName}
+          apiKey={apiKey}
+          onError={handleDataError}
+          onData={handleWeatherData}
+          onLoadingComplete={handleDataLoadComplete}
+        />
         {!loading ? (
           <>
             <TextField
@@ -136,9 +128,9 @@ if (data.weather && data.weather.length > 0){
 
             </Slide>
              {/* Select 5 ciudades prestablecidas. */}            
-             <div className='box'>
+             <div className='box'>              
               <CitySelector onSelectCity={handleCitySelect} />
-              <WeatherDisplay selectedCity={selectedCity} />
+              <WeatherDisplay selectedCity={cityName} />         
             </div>
           </>
         ) : (
