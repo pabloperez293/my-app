@@ -81,6 +81,8 @@ if (data.weather && data.weather.length > 0){
     <div className='container'>
 
       <div className='bg_img'>
+
+  
       
         {!loading ? (
           <>

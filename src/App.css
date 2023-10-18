@@ -12,7 +12,7 @@
 .bg_img {
   width: 100%;
   min-height: 100vh;
-  background: url(images/bg.jpg)no-repeat center center/cover;
+  background: url(assets/images/bg.jpg)no-repeat center center/cover;
   display: flex;
   justify-content: center;
   align-items: center;
