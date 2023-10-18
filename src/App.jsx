@@ -1,18 +1,15 @@
-import { TextField, Slide ,CircularProgress} from "@mui/material";
-// Importaciones de fontawesome
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSun, faCloud, faSnowflake ,faCloudRain } from "@fortawesome/free-solid-svg-icons";
+import React, {  useState } from "react";
+import { TextField, Slide, CircularProgress } from "@mui/material";
 // linkeado el componente
 import "./App.css";
-import React,{ useEffect, useState } from "react";
-import Geolocalizacion from "./components/Geolocalizacion";
 // Integrando comp al principal
+import Geolocalizacion from "./components/Geolocalizacion";
 import CitySelector from "./components/CitySelector";
 import WeatherDisplay from "./components/WeatherDisplay";
 import WeatherDataFetcher from "./components/WeatherDataFetcher";
+import WeatherIcon from "./components/WeatherIcon";
 
-
-function App({ onSelectCity }) {
+function App() {
   const apiKey = process.env.REACT_APP_API_KEY;
   const [cityName, setCityName] = useState("Ciudad Autónoma de Buenos Aires");
   const [inputText, setInputText] = useState("");
@@ -20,56 +17,33 @@ function App({ onSelectCity }) {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
-// Esto sirve para la funcion de busqueda de ciudades
+  // Esto sirve para la funcion de busqueda de ciudades
   const handleSearch = (e) => {
     if (e.key === "Enter") {
       setCityName(e.target.value);
       setInputText("");
     }
-  }
+  };
   const handleCitySelect = (city) => {
     setCityName(city);
-  }
+  };
 
   const handleDataError = (hasError) => {
     setError(hasError);
-  }
+  };
 
   const handleDataLoadComplete = () => {
     setLoading(false);
-  }
+  };
 
   const handleWeatherData = (data) => {
     setData(data);
-  }
-
-  // Agregando los iconos 
-let weatherIcon;
-
-if (data.weather && data.weather.length > 0){
-  switch (data.weather[0].main) {
-    case "Clear":
-      weatherIcon = faSun;
-      break;
-    case "Clouds":
-      weatherIcon = faCloud;
-      break;
-    case "Snow":
-      weatherIcon = faSnowflake;
-      break;
-    case "Rain":
-      weatherIcon = faCloudRain;
-      break;
-    default:
-      weatherIcon = faSun; 
-  }}else{
-    weatherIcon = faSun;
-  }
+  };
 
   return (
     <div className='container'>
       <div className='bg_img'>
-      <WeatherDataFetcher
+        <WeatherDataFetcher
           cityName={cityName}
           apiKey={apiKey}
           onError={handleDataError}
@@ -89,17 +63,10 @@ if (data.weather && data.weather.length > 0){
             />
 
             <h1 className='city'> {data.name}</h1>
-            <div className='group'>
-              {/* Llamo al componente */}
-
-              <FontAwesomeIcon icon={weatherIcon} style={{                 
-                  height: "60px",
-                }} />
-
-
+            <div className='group'>              
+              <WeatherIcon weatherData={data.weather}/>
               <h1>{data.weather[0].main}</h1>
             </div>
-            
 
             <h1 className='temp'>{Math.round(data.main.temp)}°C</h1>
             <Slide direction='right' timeout={800} in={!loading}>
@@ -108,7 +75,6 @@ if (data.weather && data.weather.length > 0){
                   <p>Humedad</p>
                   <h1>{data.main.humidity}%</h1>
                 </div>
-
                 {/* Geo */}
                 <div className='box'>
                   <p>Localización </p>
@@ -119,28 +85,23 @@ if (data.weather && data.weather.length > 0){
                   <p>Vientos</p>
                   <h1>{data.wind.speed}km/h</h1>
                 </div>
-
                 <div className='box'>
                   <p>Sensacion termica</p>
                   <h1>{data.main.feels_like.toFixed()}°C</h1>
                 </div>
-              </div>            
-
+              </div>
             </Slide>
-             {/* Select 5 ciudades prestablecidas. */}            
-             <div className='box'>              
+            {/* Select 5 ciudades prestablecidas. */}
+            <div className='box'>
               <CitySelector onSelectCity={handleCitySelect} />
-              <WeatherDisplay selectedCity={cityName} />         
+              <WeatherDisplay selectedCity={cityName} />
             </div>
           </>
         ) : (
           <CircularProgress />
         )}
-
-  
-
       </div>
-     </div>
+    </div>
   );
 }
 
